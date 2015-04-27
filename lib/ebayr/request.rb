@@ -23,6 +23,10 @@ module Ebayr #:nodoc:
     def input_xml
       self.class.xml(@input)
     end
+    
+    def token_xml
+      @auth_token.empty? ? "" : "<RequesterCredentials><eBayAuthToken>#{@auth_token}</eBayAuthToken></RequesterCredentials>"
+    end
 
     # Gets the path to which this request will be posted
     def path
@@ -47,9 +51,7 @@ module Ebayr #:nodoc:
       <<-XML
         <?xml version="1.0" encoding="utf-8"?>
         <#{@command}Request xmlns="urn:ebay:apis:eBLBaseComponents">
-          <RequesterCredentials>
-            <eBayAuthToken>#{@auth_token}</eBayAuthToken>
-          </RequesterCredentials>
+          #{token_xml}
           #{input_xml}
         </#{@command}Request>
       XML
